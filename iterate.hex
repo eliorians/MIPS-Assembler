@@ -1,12 +1,16 @@
-DC010020 # ld r1 sum r0
-DC020028 # ld r2 ten r0
-60030000 # daddi r3 r0 0
-0023082C # dadd r1 r1 r3
-60630001 # daddi r3 r3 1
-10430001 # beq r3 r2 end
-08000003 # j loop
-04000000 # halt
-00000000 # sum .dfill 0
-00000000
-0000000A # ten .dfill 10
-00000000
+# Code in this file is equivalent to:
+# sum = 0;
+# for (i = 0; i < 10; i++)
+# sum = sum + i;
+#
+
+ld r1 sum r0 # r[1] = 0
+ld r2 ten r0 # r[2] = 10
+daddi r3 r0 0 # r[3] = 0
+loop dadd r1 r1 r3 # r[1] = r[1] + r[3]
+daddi r3 r3 1 # r[3] = r[3] + 1
+beq r3 r2 end # if r[3] == r[2] goto end
+j loop # goto loop
+end halt
+sum .dfill 0
+ten .dfill 10
