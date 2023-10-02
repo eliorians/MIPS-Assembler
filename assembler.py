@@ -22,9 +22,22 @@ def main():
             lines[i] = lines[i].split('#')[0]
 
     #label calculation
-    #find byte location of all labels and store them somewhere to be referred to?
-        #labels do not have a space infront of them
+    byte = 0
+    labels = {}
+    for i in range(len(lines)):
 
+        #find byte location of all labels and store as dict to be refered to later
+        j = lines[i]
+        if j[0].isalpha():
+            l = j.split(" ")[0]
+            labels[byte] = l
+        
+        #increment byte, if line contains .dfill, byte+8
+        if '.dfill' in lines[i]:
+            byte = byte+8
+        else:
+            byte = byte+4
+        
     #while not empty
     #track pc counter
     #if statement for every instruction type
