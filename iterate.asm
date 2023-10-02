@@ -4,13 +4,13 @@
 # sum = sum + i;
 #
 
-ld r1 sum r0 # r[1] = 0
-ld r2 ten r0 # r[2] = 10
-daddi r3 r0 0 # r[3] = 0
+    ld r1 sum r0 # r[1] = 0
+    ld r2 ten r0 # r[2] = 10
+    daddi r3 r0 0 # r[3] = 0
 loop dadd r1 r1 r3 # r[1] = r[1] + r[3]
-daddi r3 r3 1 # r[3] = r[3] + 1
-beq r3 r2 end # if r[3] == r[2] goto end
-j loop # goto loop
+    daddi r3 r3 1 # r[3] = r[3] + 1
+    beq r3 r2 end # if r[3] == r[2] goto end
+    j loop # goto loop
 end halt
 sum .dfill 0
 ten .dfill 10
