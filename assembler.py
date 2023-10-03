@@ -19,14 +19,24 @@ def register_to_binary(register_str):
 def label_to_binary(label, label_dict):
     byte = label_dict[label]
     decimal_byte = int(byte)
-    binary_byte = bin(decimal_byte)[2:]  # Convert to binary, removing the '0b' prefix
-    return binary_byte.zfill(16)  # Ensure the binary string is 16 bits long, filling with leading zeros if necessary
+    # Convert to binary, removing the '0b' prefix
+    binary_byte = bin(decimal_byte)[2:]  
+    # Ensure the binary string is 16 bits long, filling with leading zeros if necessary
+    return binary_byte.zfill(16)  
 
 def binary_to_hex(binary_str):
     
     hex_str = hex(int(binary_str, 2)).upper()  
     # Remove the '0x' prefix and return the result
     return hex_str[2:]
+
+def decimal_to_binary16(decimal_str):
+    decimal_num = int(decimal_str)
+    # Convert to binary and remove '0b' prefix
+    binary_str = bin(decimal_num)[2:]  
+    # Pad with leading zeros to make it 16 bits long
+    binary_str = binary_str.zfill(16)
+    return binary_str
 
 def main():
 
@@ -75,18 +85,25 @@ def main():
         line = line.split()
         binaryLine = ""
 
-        #ld operation 
-        #Opcode 55 in 6 bits / rt in 5 bits / imm in 16 bits / rs in 5 bits / 
+        #ld
+        #Opcode 55 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
         #encoding: opcode / rs / rt / imm
         if (line[0]=='ld' and line[1] in registers and line[2] in labels and line[3] in registers):
             binaryLine = '110111'+register_to_binary(line[3])+register_to_binary(line[1])+label_to_binary(line[2],labels)
             binary.append(binaryLine)
 
-        #l.d operation
-        #Opcode 53 in 6 bits / rt in 5 bits / imm in 16 bits / rs in 5 bits / 
+        #l.d
+        #Opcode 53 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='l.d' and line[1] in registers and line[2] in labels and line[3] in registers):
             binaryLine = '110101'+register_to_binary(line[3])+register_to_binary(line[1])+label_to_binary(line[2],labels)
+            binary.append(binaryLine)
+
+        #daddi
+        #Opcode 24 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits 
+        #encoding: opcode / rs / rt / imm
+        elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3].isdigit()):
+            binaryLine = '11000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
             binary.append(binaryLine)
 
         #not a valid line
