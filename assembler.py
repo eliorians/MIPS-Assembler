@@ -133,12 +133,10 @@ def main():
     for i in range(len(binary)):
         hex.append(binary_to_hex(binary[i]))
                 
-    print(hex)
-
     #write to output file, places line then newline
     outputFile = os.path.splitext(inputFile)[0]+'.hex'
     output = open(outputFile, 'w')
-    for i in lines:
+    for i in hex:
         output.writelines(i + '\n')
     #removes last new line
     output.truncate(output.tell()-len(os.linesep))
