@@ -1,8 +1,10 @@
 #office hours 3-5 T/R
+
 import sys
 import os
 
 #list of possible registers
+registers = [f'r{i}' for i in range(32)]
 
 def register_to_binary(register_str):
         # Extract the numeric part from the input string
@@ -24,8 +26,13 @@ def label_to_binary(label, label_dict):
     # Ensure the binary string is 16 bits long, filling with leading zeros if necessary
     return binary_byte.zfill(16)  
 
+def remove_label(line, label):
+    words = line.split()
+    if label in words:
+        words.remove(label)
+    return ' '.join(words)
+
 def binary_to_hex(binary_str):
-    
     hex_str = hex(int(binary_str, 2)).upper()  
     # Remove the '0x' prefix and return the result
     return hex_str[2:]
@@ -39,7 +46,6 @@ def decimal_to_binary16(decimal_str):
     return binary_str
 
 def main():
-
     #get file and put each line into a string in list
     inputFile = sys.argv[1]
     lines = open(inputFile).read().splitlines()
@@ -66,17 +72,20 @@ def main():
         if j[0].isalpha():
             l = j.split(" ")[0]
             labels[l] = byte
+            #remove the label
+            lines[i] = remove_label(lines[i], l)
         
         #increment byte, if line contains .dfill, byte+8
         if '.dfill' in lines[i]:
             byte = byte+8
         else:
             byte = byte+4
-    
-    #create list of possible registers
-    registers = [f'r{i}' for i in range(32)]
 
-    #convert to binary
+    #remove leading spaces
+    for i in range(len(lines)):
+        lines[i] = lines[i].lstrip()        
+
+    #convert instructions to binary
     pc = 0
     offset = 0
     binary = []
@@ -100,7 +109,7 @@ def main():
             binary.append(binaryLine)
 
         #daddi
-        #Opcode 24 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits 
+        #Opcode 24 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (decimal# -> binary)
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3].isdigit()):
             binaryLine = '11000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
