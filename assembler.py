@@ -107,6 +107,14 @@ def main():
         elif (line[0]=='l.d' and line[1] in registers and line[2] in labels and line[3] in registers):
             binaryLine = '110101'+register_to_binary(line[3])+register_to_binary(line[1])+label_to_binary(line[2],labels)
             binary.append(binaryLine)
+            
+        #TODO sd
+        #
+        #
+
+        #TODO s.d
+        #
+        #
 
         #daddi
         #Opcode 24 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (decimal# -> binary)
@@ -115,7 +123,59 @@ def main():
             binaryLine = '11000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
             binary.append(binaryLine)
 
-        #not a valid line
+        #TODO daddiu
+        #
+        #
+
+        #TODO beq
+        #
+        #
+
+        #TODO bne
+        #
+        #
+
+        #TODO dadd
+        #
+        #
+
+        #TODO dsub
+        #
+        #
+
+        #TODO add.d
+        #
+        #
+
+        #TODO sub.d
+        #
+        #
+
+        #TODO mul.d
+        #
+        #
+
+        #TODO div.d
+        #
+        #
+
+        #TODO j
+        #
+        #
+
+        #TODO halt
+        #
+        #
+
+        #TODO nop
+        #
+        #
+
+        #TODO dump
+        #
+        #
+
+        #not valid
         else:
             print("Invalid input on line "+str(offset))
             break
