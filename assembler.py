@@ -193,11 +193,15 @@ def main():
         #
         #
 
-        #j (J)
+        #j (J) label
         # OpCode 2 in 6 bits / offset 26 bits
         # opcode / offset
         elif (line[0]=='j' and line[1] in labels):
             binaryLine = '000010'+decimal_to_binary26(labels[line[1]]/4)
+            binary.append(binaryLine)
+        #j imm
+        elif (line[0]=='j' and line[1].isdigit()):
+            binaryLine = '000010'+decimal_to_binary26(line[1])
             binary.append(binaryLine)
 
         #halt (J)
@@ -207,9 +211,12 @@ def main():
             binaryLine = '000001'+decimal_to_binary26(0)
             binary.append(binaryLine)
 
-        #TODO nop (J)
-        #
-        #
+        #nop (J)
+        # OpCode 3 in 6 bits / offset 26 bits
+        # opcode / offset
+        elif (line[0]=='nop'):
+            binaryLine = '000011'+decimal_to_binary26(0)
+            binary.append(binaryLine)
 
         #TODO dump (J)
         #
