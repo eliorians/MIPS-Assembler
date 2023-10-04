@@ -159,7 +159,7 @@ def main():
         # Opcode 4 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
         # encoding: opcode / rs / rt / imm
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3] in labels):
-            binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs((pc-int(labels[line[3]]))/8))
+            binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs(int((pc-int(labels[line[3]]))/8)))
             binary.append(binaryLine)
             #beq imm
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3].isdigit):
@@ -169,7 +169,7 @@ def main():
         # Opcode 5 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
         # encoding: opcode / rs / rt / imm
         elif (line[0]=='bne' and line[1] in registers and line[2] in registers and line[3] in labels):
-            binaryLine = '000101'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs((pc-int(labels[line[3]]))/8))
+            binaryLine = '000101'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs(int((pc-int(labels[line[3]]))/8)))
             binary.append(binaryLine)
 
         #dadd (R)
@@ -203,7 +203,7 @@ def main():
         # OpCode 2 in 6 bits / offset 26 bits
         # opcode / offset
         elif (line[0]=='j' and line[1] in labels):
-            binaryLine = '000010'+decimal_to_binary26(labels[line[1]]/4)
+            binaryLine = '000010'+decimal_to_binary26(int(labels[line[1]]/4))
             binary.append(binaryLine)
         #j imm
         elif (line[0]=='j' and line[1].isdigit()):
