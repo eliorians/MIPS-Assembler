@@ -4,7 +4,9 @@ import sys
 import os
 
 #list of possible registers
-registers = [f'r{i}' for i in range(32)]
+registers = []
+for i in range(32):
+    registers.append(f"r{i}")
 
 def register_to_binary(register_str):
         # Extract the numeric part from the input string
