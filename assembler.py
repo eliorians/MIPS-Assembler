@@ -1,4 +1,5 @@
 #office hours 3-5 T/R
+#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
 
 import sys
 import os
@@ -260,9 +261,8 @@ def main():
     outputFile = os.path.splitext(inputFile)[0]+'.hex'
     output = open(outputFile, 'w')
     for i in range(len(hex)):
-        #only write file if valid input
         output.writelines(hex[i] + comments[i] + '\n')
-        print(hex[i] + comments[i])
+        #print(hex[i] + comments[i])
     #removes last new line
     #output.truncate(output.tell()-len(os.linesep))
     output.close()
