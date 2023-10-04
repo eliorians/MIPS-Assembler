@@ -3,7 +3,7 @@ dc020030 # ld r2 ten r0
 60030000 # daddi r3 r0 0
 0023082c # dadd r1 r1 r3
 60630001 # daddi r3 r3 1
-10430002 # beq r3 r2 1
+10430001 # beq r3 r2 1
 0c000000 # nop
 08000003 # j 3
 0c000000 # nop

@@ -157,7 +157,7 @@ def main():
             binary.append(binaryLine)
         #beq imm
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3].isdigit):
-            binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs((pc-int(line[3]))/8))
+            binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
             binary.append(binaryLine)
         #bne (I)
         # Opcode 5 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
