@@ -142,7 +142,7 @@ def main():
         elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3].isdigit()):
             binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
             binary.append(binaryLine)
-        #daddu label
+            #daddu label
         elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3] in labels):
             binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+label_to_binary(line[3], labels)
             binary.append(binaryLine)
@@ -160,7 +160,7 @@ def main():
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3] in labels):
             binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs((pc-int(labels[line[3]]))/8))
             binary.append(binaryLine)
-        #beq imm
+            #beq imm
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3].isdigit):
             binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
             binary.append(binaryLine)
