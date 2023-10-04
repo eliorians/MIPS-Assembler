@@ -221,7 +221,7 @@ def main():
 
         #not valid
         else:
-            print("Invalid input on line "+str(offset))
+            print("Invalid input on "+line)
             break
 
         #increment pc counter, if line contains .dfill, byte+8
