@@ -74,11 +74,10 @@ def main():
     byte = 0
     labels = {}
     for i in range(len(lines)):
-
         #find byte location of all labels and store as dict to be refered to later
         j = lines[i]
         if j[0].isalpha():
-            l = j.split(" ")[0]
+            l = j.split()[0]
             labels[l] = byte
             #remove the label
             lines[i] = remove_label(lines[i], l)
@@ -92,18 +91,18 @@ def main():
     #remove leading & trailing spaces
     for i in range(len(lines)):
         lines[i] = lines[i].strip()    
-
+    
     #convert instructions to binary
     pc = 0
     offset = 0
     binary = []
     comments = []
+    invalid = False
     for i in range(len(lines)):
         line = lines[i]
         comments.append(' # '+remove_label(line, labels))
         line = line.split()
         binaryLine = ""
-        
 
         #! operation (instruction type)
         #! fields incoming
@@ -132,11 +131,15 @@ def main():
         #
         #
 
-        #daddi (I)
+        #daddi (I) immediate
         #Opcode 24 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (decimal# -> binary)
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3].isdigit()):
             binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
+            binary.append(binaryLine)
+        #daddu label
+        elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3] in labels):
+            binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+label_to_binary(line[3], labels)
             binary.append(binaryLine)
 
         #daddiu (I)
@@ -146,13 +149,16 @@ def main():
             binaryLine = '011001'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
             binary.append(binaryLine)
 
-        #beq (I)
+        #beq (I) label
         # Opcode 4 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
         # encoding: opcode / rs / rt / imm
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3] in labels):
             binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs((pc-int(labels[line[3]]))/8))
             binary.append(binaryLine)
-
+        #beq imm
+        elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3].isdigit):
+            binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs((pc-int(line[3]))/8))
+            binary.append(binaryLine)
         #bne (I)
         # Opcode 5 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
         # encoding: opcode / rs / rt / imm
@@ -221,7 +227,9 @@ def main():
 
         #not valid
         else:
-            print("Invalid input on "+line)
+            print("Invalid input on line " + str(offset))
+            print(lines[i])
+            invalid = True
             break
 
         #increment pc counter, if line contains .dfill, byte+8
@@ -242,10 +250,12 @@ def main():
     outputFile = os.path.splitext(inputFile)[0]+'.hex'
     output = open(outputFile, 'w')
     for i in range(len(hex)):
-        output.writelines(hex[i] + comments[i] + '\n')
+        #only write file if valid input
+        if (invalid == False):
+            output.writelines(hex[i] + comments[i] + '\n')
         print(hex[i] + comments[i])
     #removes last new line
-    output.truncate(output.tell()-len(os.linesep))
+    #output.truncate(output.tell()-len(os.linesep))
     output.close()
 
 if __name__ == "__main__":
