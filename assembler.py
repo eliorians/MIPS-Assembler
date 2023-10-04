@@ -253,14 +253,14 @@ def main():
         hex.append(binary_to_hex(binary[i]))
                 
     #write to output file, places line then newline
-    print('...')
     outputFile = os.path.splitext(inputFile)[0]+'.hex'
     output = open(outputFile, 'w')
     for i in range(len(hex)):
         #only write file if valid input
         if (invalid == False):
             output.writelines(hex[i] + comments[i] + '\n')
-        print(hex[i] + comments[i])
+        else:
+            print(hex[i] + comments[i])
     #removes last new line
     #output.truncate(output.tell()-len(os.linesep))
     output.close()
