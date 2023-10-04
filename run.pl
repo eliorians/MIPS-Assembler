@@ -36,7 +36,7 @@ for ($i = 0; $i <= $#canfiles; $i++){
 
 #  change the command in quotes below if the name of your executable isn't ma
 #  For example, "java Assembler $input"
-   system "ma $input";
+   system "python assembler.py $input";
 
    #print "Comparing $output and $canoutput\n";
    system "/u/css/classes/5483/111/MA/mydiff $output $canoutput 8 > $prefix.problems";
