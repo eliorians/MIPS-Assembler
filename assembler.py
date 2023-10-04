@@ -222,9 +222,12 @@ def main():
             binaryLine = '000011'+decimal_to_binary26(0)
             binary.append(binaryLine)
 
-        #TODO dump (J)
-        #
-        #
+        #dump (J)
+        # OpCode 44 in 6 bits / data in 26 bits
+        # opcode / offset
+        elif (line[0]=='dump' and line[1].isdigit()):
+            binaryLine = '000011'+decimal_to_binary26(line[1])
+            binary.append(binaryLine)
 
         #.dfil
         # store data into two lines, add no comment line
@@ -240,8 +243,7 @@ def main():
         else:
             print("Invalid input on line " + str(offset))
             print(lines[i])
-            invalid = True
-            break
+            exit()
 
         #increment pc counter, if line contains .dfill, byte+8
         if '.dfill' in lines[i]:
