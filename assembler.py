@@ -35,7 +35,7 @@ def remove_label(line, label):
 def binary_to_hex(binary_str):
     hex_str = hex(int(binary_str, 2)).upper()  
     # Remove the '0x' prefix and return the result
-    return hex_str[2:]
+    return hex_str[2:].zfill(8)
 
 def decimal_to_binary16(decimal_str):
     decimal_num = int(decimal_str)
@@ -94,84 +94,91 @@ def main():
         line = line.split()
         binaryLine = ""
 
-        #ld
+        #operation (instruction type)
+        #fields incoming
+        #encoding
+
+        #ld (I)
         #Opcode 55 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
         #encoding: opcode / rs / rt / imm
         if (line[0]=='ld' and line[1] in registers and line[2] in labels and line[3] in registers):
             binaryLine = '110111'+register_to_binary(line[3])+register_to_binary(line[1])+label_to_binary(line[2],labels)
             binary.append(binaryLine)
 
-        #l.d
+        #l.d (I)
         #Opcode 53 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='l.d' and line[1] in registers and line[2] in labels and line[3] in registers):
             binaryLine = '110101'+register_to_binary(line[3])+register_to_binary(line[1])+label_to_binary(line[2],labels)
             binary.append(binaryLine)
             
-        #TODO sd
+        #TODO sd (I)
         #
         #
 
-        #TODO s.d
+        #TODO s.d (I)
         #
         #
 
-        #daddi
+        #daddi (I)
         #Opcode 24 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (decimal# -> binary)
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3].isdigit()):
             binaryLine = '11000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
             binary.append(binaryLine)
 
-        #TODO daddiu
+        #TODO daddiu (I)
         #
         #
 
-        #TODO beq
+        #TODO beq (I)
         #
         #
 
-        #TODO bne
+        #TODO bne (I)
         #
         #
 
-        #TODO dadd
+        #TODO dadd (R)
+        # OpCode 0 in 6 bits / rd in 5 bits / rs in 5 bits / rt in 5 bits
+        # opcode / rs / rt / rd / shamt (0) in 5 bits / funct 46 in 6 bits
+        elif (line[0]=='dadd' and line[1] in registers and line[2] in registers and line[3] in registers):
+            binaryLine = '000000'+register_to_binary(line[2])+register_to_binary(line[3])+register_to_binary(line[1])+'00000'+'101100'
+            binary.append(binaryLine)
+
+        #TODO dsub (R)
         #
         #
 
-        #TODO dsub
+        #TODO add.d (R)
         #
         #
 
-        #TODO add.d
+        #TODO sub.d (R)
         #
         #
 
-        #TODO sub.d
+        #TODO mul.d (R)
         #
         #
 
-        #TODO mul.d
+        #TODO div.d (R)
         #
         #
 
-        #TODO div.d
+        #TODO j (J)
         #
         #
 
-        #TODO j
+        #TODO halt (J)
         #
         #
 
-        #TODO halt
+        #TODO nop (J)
         #
         #
 
-        #TODO nop
-        #
-        #
-
-        #TODO dump
+        #TODO dump (J)
         #
         #
 
