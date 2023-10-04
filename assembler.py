@@ -261,10 +261,8 @@ def main():
     output = open(outputFile, 'w')
     for i in range(len(hex)):
         #only write file if valid input
-        if (invalid == False):
-            output.writelines(hex[i] + comments[i] + '\n')
-        else:
-            print(hex[i] + comments[i])
+        output.writelines(hex[i] + comments[i] + '\n')
+        print(hex[i] + comments[i])
     #removes last new line
     #output.truncate(output.tell()-len(os.linesep))
     output.close()
