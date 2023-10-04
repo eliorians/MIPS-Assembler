@@ -33,7 +33,7 @@ def remove_label(line, label):
     return ' '.join(words)
 
 def binary_to_hex(binary_str):
-    hex_str = hex(int(binary_str, 2)).upper()  
+    hex_str = hex(int(binary_str, 2)) 
     # Remove the '0x' prefix and return the result
     return hex_str[2:].zfill(8)
 
