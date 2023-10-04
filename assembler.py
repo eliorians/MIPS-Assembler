@@ -108,11 +108,15 @@ def main():
         #! fields incoming
         #! encoding
 
-        #ld (I)
+        #ld (I) from label
         #Opcode 55 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
         #encoding: opcode / rs / rt / imm
         if (line[0]=='ld' and line[1] in registers and line[2] in labels and line[3] in registers):
             binaryLine = '110111'+register_to_binary(line[3])+register_to_binary(line[1])+label_to_binary(line[2],labels)
+            binary.append(binaryLine)
+            #ld from immm
+        elif (line[0]=='ld' and line[1] in registers and line[2].isdigit() and line[3] in registers):
+            binaryLine = '110111'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(line[2])
             binary.append(binaryLine)
 
         #l.d (I)
