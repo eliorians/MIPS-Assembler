@@ -226,7 +226,7 @@ def main():
         # OpCode 44 in 6 bits / data in 26 bits
         # opcode / offset
         elif (line[0]=='dump' and line[1].isdigit()):
-            binaryLine = '000011'+decimal_to_binary26(line[1])
+            binaryLine = '101100'+decimal_to_binary26(line[1])
             binary.append(binaryLine)
 
         #.dfil
