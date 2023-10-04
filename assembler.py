@@ -1,5 +1,4 @@
-#office hours 3-5 T/R
-#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
+#!/usr/bin/python
 
 import sys
 import os
