@@ -96,6 +96,14 @@ def float_to_binary32(number):
     binary_representation = bin(integer_representation)[2:].zfill(32)
     return binary_representation
 
+def label_to_binary32(label, label_dict):
+    byte = label_dict[label]
+    decimal_byte = int(byte)
+    # Convert to binary, removing the '0b' prefix
+    binary_byte = bin(decimal_byte)[2:]  
+    # Ensure the binary string is 16 bits long, filling with leading zeros if necessary
+    return binary_byte.zfill(32)  
+
 def is_integer(s):
     try:
         int(s)
@@ -345,6 +353,16 @@ def main():
         # store data into two lines, add no comment line
         elif (line[0]=='.dfill' and is_float(line[1])):
             binaryLine = float_to_binary32(float(line[1]))
+            binaryLeft = binaryLine[:16]
+            binaryRight = binaryLine[16:]
+            binary.append(binaryRight)
+            binary.append(binaryLeft)
+            comments.append('')
+
+        #.dfil for labels
+        # store data into two lines, add no comment line
+        elif (line[0]=='.dfill' and line[1] in labels):
+            binaryLine = label_to_binary32(line[1], labels)
             binaryLeft = binaryLine[:16]
             binaryRight = binaryLine[16:]
             binary.append(binaryRight)
