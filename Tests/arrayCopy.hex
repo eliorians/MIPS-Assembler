@@ -46,13 +46,13 @@ fc4300c0 # sd r3 array2 r2
 00000000
 00000014 # .dfill 20
 00000000
-0000ffff # .dfill -1
-0000ffff
-0000ffff # .dfill -1
-0000ffff
-0000ffff # .dfill -1
-0000ffff
-0000ffff # .dfill -1
-0000ffff
-0000ffff # .dfill -1
-0000ffff
+ffffffff # .dfill -1
+ffffffff
+ffffffff # .dfill -1
+ffffffff
+ffffffff # .dfill -1
+ffffffff
+ffffffff # .dfill -1
+ffffffff
+ffffffff # .dfill -1
+ffffffff

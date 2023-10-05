@@ -14,8 +14,8 @@ fc050068 # sd r5 dest3 r0
 00000000
 0000000f # .dfill 15
 00000000
-0000ffff # .dfill -1
-0000ffff
+ffffffff # .dfill -1
+ffffffff
 00000017 # .dfill 23
 00000000
 0000001f # .dfill 31
