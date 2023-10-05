@@ -1,4 +1,3 @@
-
 640100d0 # daddiu r1 r0 a00
 64020100 # daddiu r2 r0 b00
 64030130 # daddiu r3 r0 c00
