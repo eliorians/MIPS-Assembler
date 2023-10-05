@@ -1,5 +1,5 @@
-60010034 # daddi  r1 r0  X
-60020084 # daddi  r2 r0  Y
+60010038 # daddi  r1 r0  X
+60020088 # daddi  r2 r0  Y
 6003000a # daddi  r3 r0  10
 60040000 # daddi  r4 r0  0
 d4220000 # l.d f2 0 r1
@@ -9,8 +9,9 @@ f4460000 # s.d  f6 0 r2
 64210008 # daddiu r1 r1 8
 64420008 # daddiu r2 r2 8
 64840001 # daddiu r4 r4 1
-14640003 # bne r4 r3 foo
+1464fff8 # bne r4 r3 foo
 04000000 # halt
+00000000
 0000cccd # .dfill 1.1
 00003f8c
 0000cccd # .dfill 2.2
