@@ -1,0 +1,65 @@
+dc0100a4 # ld	r1	fib0	r0
+dc0200ac # ld	r2	fib1	r0
+0022182c # dadd	r3	r1	r2
+fc0300b4 # sd	r3	fib2	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300bc # sd	r3	fib3	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300c4 # sd	r3	fib4	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300cc # sd	r3	fib5	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300d4 # sd	r3	fib6	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300dc # sd	r3	fib7	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300e4 # sd	r3	fib8	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300ec # sd	r3	fib9	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300f4 # sd	r3	fib10	r0
+0040082c # dadd	r1	r2	r0
+0060102c # dadd	r2	r3	r0
+0022182c # dadd	r3	r1	r2
+fc0300fc # sd	r3	fib11	r0
+04000000 # halt
+00000000 # .dfill 0
+00000000
+00000001 # .dfill 1
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000

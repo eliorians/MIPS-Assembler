@@ -1,76 +1,76 @@
-dc01012c # ld r1 zero r0
-dc020134 # ld r2 one r0
-dc03013c # ld r3 two r0
-dc040144 # ld r4 three r0
-dc05014c # ld r5 four r0
-dc060154 # ld r6 five r0
-dc07015c # ld r7 six r0
-dc080164 # ld r8 seven r0
-dc09016c # ld r9 eight r0
-dc0a0174 # ld r10 nine r0
-dc0b017c # ld r11 ten r0
-dc140000 # ld r20 0 r0
+dc01012c # ld	r1	zero	r0
+dc020134 # ld	r2	one	r0
+dc03013c # ld	r3	two	r0
+dc040144 # ld	r4	three	r0
+dc05014c # ld	r5	four	r0
+dc060154 # ld	r6	five	r0
+dc07015c # ld	r7	six	r0
+dc080164 # ld	r8	seven	r0
+dc09016c # ld	r9	eight	r0
+dc0a0174 # ld	r10	nine	r0
+dc0b017c # ld	r11	ten	r0
+dc140000 # ld	r20	0	r0
 0021082c # dadd r1 r1 r1
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 loop1
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	loop1
 0c000000 # nop
-0800000c # j loop
+0800000c # j	loop
 0c000000 # nop
-dc140000 # ld r20 0 r0
+dc140000 # ld	r20	0	r0
 0042102c # dadd r2 r2 r2
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 loop2
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	loop2
 0c000000 # nop
-08000013 # j loop1
+08000013 # j	loop1
 0c000000 # nop
-dc140000 # ld r20 0 r0
+dc140000 # ld	r20	0	r0
 0063182c # dadd r3 r3 r3
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 loop3
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	loop3
 0c000000 # nop
-0800001a # j loop2
+0800001a # j	loop2
 0c000000 # nop
-dc140000 # ld r20 0 r0
+dc140000 # ld	r20	0	r0
 0084202c # dadd r4 r4 r4
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 loop4
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	loop4
 0c000000 # nop
-08000021 # j loop3
+08000021 # j	loop3
 0c000000 # nop
-dc140000 # ld r20 0 r0
+dc140000 # ld	r20	0	r0
 00a5282c # dadd r5 r5 r5
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 loop5
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	loop5
 0c000000 # nop
-08000028 # j loop4
+08000028 # j	loop4
 0c000000 # nop
-dc140000 # ld r20 0 r0
+dc140000 # ld	r20	0	r0
 00c6302c # dadd r6 r6 r6
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 loop6
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	loop6
 0c000000 # nop
-0800002f # j loop5
+0800002f # j	loop5
 0c000000 # nop
-dc140000 # ld r20 0 r0
+dc140000 # ld	r20	0	r0
 00e7382c # dadd r7 r7 r7
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 loop7
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	loop7
 0c000000 # nop
-08000036 # j loop6
+08000036 # j	loop6
 0c000000 # nop
-dc140000 # ld r20 0 r0
+dc140000 # ld	r20	0	r0
 0108402c # dadd r8 r8 r8
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 loop8
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	loop8
 0c000000 # nop
-0800003d # j loop7
+0800003d # j	loop7
 0c000000 # nop
-dc140000 # ld r20 0 r0
+dc140000 # ld	r20	0	r0
 0129482c # dadd r9 r9 r9
-62940001 # daddi r20 r20 1
-11740002 # beq r20 r11 end
+62940001 # daddi	r20	r20	1
+11740002 # beq	r20	r11	end
 0c000000 # nop
-08000044 # j loop8
+08000044 # j	loop8
 0c000000 # nop
 04000000 # halt
 00000000 # .dfill 0
