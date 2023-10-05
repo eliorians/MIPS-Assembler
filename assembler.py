@@ -341,8 +341,8 @@ def main():
         elif (line[0]=='halt'):
             binaryLine = '000001'+decimal_to_binary26(0)
             binary.append(binaryLine)
-            #if halt doesnt end on multiple of 8, make it so
-            if ((pc+4) % 8 != 0):
+            #if halt doesnt end on multiple of 8, make it so (but only if there are lines after!)
+            if ((pc+4) % 8 != 0 and i != len(lines[i])):
                 binaryLine = decimal_to_binary32(0)
                 binary.append(binaryLine)
                 comments.append('')
