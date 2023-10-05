@@ -155,8 +155,6 @@ def main():
             lines[i] = lines[i].split('#')[0]
 
     #label calculation
-    #todo alignment (add extra bytes to some lines and also add 00000000 line?)
-    #todo if halt ends on byte not a multiple of 8 then padd with 0's to make it so
     byte = 0
     labels = {}
     for i in range(len(lines)):
@@ -167,12 +165,16 @@ def main():
             labels[l] = byte
             #remove the label
             lines[i] = remove_label(lines[i], l)
-        
+
         #increment byte, if line contains .dfill, byte+8
         if '.dfill' in lines[i]:
             byte = byte+8
         else:
             byte = byte+4
+        
+        #if halt ends on byte not a multiple of 8 then padd with 0's to make it so
+        if 'halt' in lines[i] and byte % 8 != 0:
+            byte = byte + 4
 
     #remove leading & trailing spaces
     for i in range(len(lines)):
@@ -339,6 +341,11 @@ def main():
         elif (line[0]=='halt'):
             binaryLine = '000001'+decimal_to_binary26(0)
             binary.append(binaryLine)
+            #if halt doesnt end on multiple of 8, make it so
+            if ((pc+4) % 8 != 0):
+                binaryLine = decimal_to_binary32(0)
+                binary.append(binaryLine)
+                comments.append('')
 
         #nop (J)
         # OpCode 3 in 6 bits / offset 26 bits
