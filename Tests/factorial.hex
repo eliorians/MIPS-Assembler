@@ -1,0 +1,58 @@
+60010068 # daddi r1 r0 num1
+60020070 # daddi r2 r0 fact1
+60030000 # daddi r3 r0 0
+60040008 # daddi r4 r0 8
+dc070060 # ld  r7 two r0
+dc250000 # ld r5 0 r1
+dc260000 # ld r6 0 r1
+0005482c # dadd  r9 r0 r5
+10e60005 # beq r6 r7 cont
+0000482c # dadd  r9 r0 r0
+60caffff # daddi r10 r6 -1
+100a0002 # beq r10 r0 break
+0125482c # dadd r9 r9 r5
+614affff # daddi r10 r10 -1
+0800000b # j in2
+0009282c # dadd r5 r0 r9
+60c6ffff # daddi r6 r6 -1
+08000008 # j inner
+fc490000 # sd r9 0 r2
+60210010 # daddi r1 r1 16
+60420010 # daddi r2 r2 16
+60630001 # daddi r3 r3 1
+14830008 # bne r3 r4 loop
+04000000 # halt
+00000002 # .dfill 2
+00000000
+00000002 # .dfill 2
+00000000
+00000000 # .dfill 0
+00000000
+00000004 # .dfill 4
+00000000
+00000000 # .dfill 0
+00000000
+00000003 # .dfill 3
+00000000
+00000000 # .dfill 0
+00000000
+00000005 # .dfill 5
+00000000
+00000000 # .dfill 0
+00000000
+00000008 # .dfill 8
+00000000
+00000000 # .dfill 0
+00000000
+0000000a # .dfill 10
+00000000
+00000000 # .dfill 0
+00000000
+0000000f # .dfill 15
+00000000
+00000000 # .dfill 0
+00000000
+00000007 # .dfill 7
+00000000
+00000000 # .dfill 0
+00000000

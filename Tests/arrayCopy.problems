@@ -1,0 +1,26 @@
+7c7
+< 14200002
+---
+> 1420fffb
+49,58c49,58
+< 0000ffff
+< 0000ffff
+< 0000ffff
+< 0000ffff
+< 0000ffff
+< 0000ffff
+< 0000ffff
+< 0000ffff
+< 0000ffff
+< 0000ffff
+---
+> ffffffff
+> ffffffff
+> ffffffff
+> ffffffff
+> ffffffff
+> ffffffff
+> ffffffff
+> ffffffff
+> ffffffff
+> ffffffff

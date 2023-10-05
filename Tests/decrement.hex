@@ -1,0 +1,9 @@
+dc02001c # ld	r2	num	r0
+6042ffff # daddi r2 r2 -1
+10020002 # beq	r2	r0	end
+0c000000 # nop
+08000001 # j	loop
+0c000000 # nop
+04000000 # halt
+0000000a # .dfill 10
+00000000

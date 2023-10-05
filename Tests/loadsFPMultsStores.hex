@@ -1,0 +1,25 @@
+d4000064 # l.d f0 num1a r0
+d4010094 # l.d f1 num2a r0
+00011031 # mul.d f2 f0 f1
+f40200c4 # s.d f2 resulta r0
+d400006c # l.d f0 num1b r0
+d401009c # l.d f1 num2b r0
+00011031 # mul.d f2 f0 f1
+f40200cc # s.d f2 resultb r0
+d4000074 # l.d f0 num1c r0
+d40100a4 # l.d f1 num2c r0
+00011031 # mul.d f2 f0 f1
+f40200d4 # s.d f2 resultc r0
+d400007c # l.d f0 num1d r0
+d40100ac # l.d f1 num2d r0
+00011031 # mul.d f2 f0 f1
+f40200dc # s.d f2 resultd r0
+d4000084 # l.d f0 num1e r0
+d40100b4 # l.d f1 num2e r0
+00011031 # mul.d f2 f0 f1
+f40200e4 # s.d f2 resulte r0
+d400008c # l.d f0 num1f r0
+d40100bc # l.d f1 num2f r0
+00011031 # mul.d f2 f0 f1
+f40200ec # s.d f2 resultf r0
+04000000 # halt

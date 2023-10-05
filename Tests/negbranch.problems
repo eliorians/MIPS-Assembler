@@ -1,0 +1,10 @@
+3c3
+< 10010000
+---
+> 1001fffe
+7,8c7,8
+< 0000ffff
+< 0000ffff
+---
+> ffffffff
+> ffffffff

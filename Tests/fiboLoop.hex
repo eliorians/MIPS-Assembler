@@ -1,0 +1,2 @@
+dc010034 # ld	r1	fib0	r0
+dc02003c # ld	r2	fib1	r0
