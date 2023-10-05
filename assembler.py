@@ -2,7 +2,7 @@ import os
 import sys
 import struct
 
-testing = False
+testing = True
 
 def binary_to_hex(binary_str):
     hex_str = hex(int(binary_str, 2)) 
@@ -104,6 +104,14 @@ def label_to_binary32(label, label_dict):
     # Ensure the binary string is 16 bits long, filling with leading zeros if necessary
     return binary_byte.zfill(32)  
 
+def extend_binary32(binary_str, is_negative):
+    if is_negative:
+        binary_str = '1' * (32 - len(binary_str)) + binary_str
+    else:
+        binary_str = '0' * (32 - len(binary_str)) + binary_str
+    
+    return binary_str
+
 def is_integer(s):
     try:
         int(s)
@@ -142,6 +150,7 @@ def main():
             lines[i] = lines[i].split('#')[0]
 
     #label calculation
+    #todo alignment (add extra bytes to some lines and also add 00000000 line?)
     byte = 0
     labels = {}
     for i in range(len(lines)):
@@ -244,6 +253,7 @@ def main():
             binary.append(binaryLine)
 
         #beq (I) label
+        #todo label calculation off
         # Opcode 4 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
         # encoding: opcode / rs / rt / imm
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3] in labels):
@@ -343,13 +353,20 @@ def main():
         # store data into two lines, add no comment line
         elif (line[0]=='.dfill' and is_integer(line[1])):
             binaryLine = decimal_to_binary32(int(line[1]))
+            
             binaryLeft = binaryLine[:16]
             binaryRight = binaryLine[16:]
+            #if number was negative, fill out the remaining 1's
+            negative = False
+            if (int(line[1]) < 0):
+                negative = True
+            binaryLeft = extend_binary32(binaryLeft, negative)
+            binaryRight = extend_binary32(binaryRight, negative)
             binary.append(binaryRight)
             binary.append(binaryLeft)
             comments.append('')
 
-        #!.dfil for floats + or -
+        #todo .dfil for floats + or -, currently is wrong
         # store data into two lines, add no comment line
         elif (line[0]=='.dfill' and is_float(line[1])):
             binaryLine = float_to_binary32(float(line[1]))

@@ -4,7 +4,7 @@ dc010018 # ld	r1	negone	r0
 0c000000 # nop
 fc010020 # sd	r1	32	r0
 04000000 # halt
-0000ffff # .dfill -1
-0000ffff
+ffffffff # .dfill -1
+ffffffff
 00000000 # .dfill 0
 00000000
