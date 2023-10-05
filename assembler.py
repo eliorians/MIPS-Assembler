@@ -2,7 +2,7 @@ import os
 import sys
 import struct
 
-testing = True
+testing = False
 
 def binary_to_hex(binary_str):
     hex_str = hex(int(binary_str, 2)) 
@@ -87,21 +87,25 @@ def decimal_to_binary32(decimal_number):
     
     return binary_representation
 
-def float_to_binary32(float_number):
-    # Pack the float as a 32-bit binary string
-    binary_representation = struct.pack('f', float_number)
-
-    # Unpack the binary string to get the 32-bit integer representation
-    int_representation = struct.unpack('I', binary_representation)[0]
-
-    # Convert the integer to a binary string with leading zeros
-    binary_string = format(int_representation, '032b')
-
-    return binary_string
+def float_to_binary32(number):
+    # Pack the float as a 32-bit integer (little-endian)
+    packed = struct.pack('<f', number)
+    # Unpack the 32-bit integer as an unsigned integer
+    integer_representation = struct.unpack('<I', packed)[0]
+    # Convert the integer to its binary representation
+    binary_representation = bin(integer_representation)[2:].zfill(32)
+    return binary_representation
 
 def is_integer(s):
     try:
         int(s)
+        return True
+    except ValueError:
+        return False
+
+def is_float(s):
+    try:
+        float(s)
         return True
     except ValueError:
         return False
@@ -209,23 +213,26 @@ def main():
             binaryLine = '111101'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(int(line[2]))
             binary.append(binaryLine)
 
-        #daddi (I) immediate
+        #daddi (I) from immediate
         #Opcode 24 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (decimal# -> binary)
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and is_integer(line[3])):
             binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
             binary.append(binaryLine)
-            #daddu label
+            #daddi from label
         elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3] in labels):
-            print(label_to_binary(line[3], labels))
             binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+label_to_binary(line[3], labels)
             binary.append(binaryLine)
 
-        #daddiu (I)
+        #daddiu (I) from imm
         #Opcode 25 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (decimal# -> binary)
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='daddiu' and line[1] in registers and line[2] in registers and is_integer(line[3])):
             binaryLine = '011001'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
+            binary.append(binaryLine)
+            #daddiu from label
+        elif (line[0]=='daddiu' and line[1] in registers and line[2] in registers and line[3] in labels):
+            binaryLine = '011001'+register_to_binary(line[2])+register_to_binary(line[1])+label_to_binary(line[3], labels)
             binary.append(binaryLine)
 
         #beq (I) label
@@ -324,9 +331,8 @@ def main():
             binaryLine = '101100'+decimal_to_binary26(line[1])
             binary.append(binaryLine)
 
-        #.dfil for decimals, floats, + or -
+        #.dfil for decimals + or -
         # store data into two lines, add no comment line
-        #TODO make work for floats
         elif (line[0]=='.dfill' and is_integer(line[1])):
             binaryLine = decimal_to_binary32(int(line[1]))
             binaryLeft = binaryLine[:16]
@@ -335,10 +341,10 @@ def main():
             binary.append(binaryLeft)
             comments.append('')
 
-        #.dfil for label
+        #!.dfil for floats + or -
         # store data into two lines, add no comment line
-        elif (line[0]=='.dfill' and (line[1]) in labels):
-            binaryLine = label_to_binary(line[1])
+        elif (line[0]=='.dfill' and is_float(line[1])):
+            binaryLine = float_to_binary32(float(line[1]))
             binaryLeft = binaryLine[:16]
             binaryRight = binaryLine[16:]
             binary.append(binaryRight)
@@ -350,7 +356,7 @@ def main():
             print("Invalid input on line " + str(offset))
             print(lines[i])
             #print all the stuff if in testing mode
-            if(testing == True):
+            if(testing):
                 break
             else:
                 exit()
@@ -369,12 +375,13 @@ def main():
         hex.append(binary_to_hex(binary[i]))
                 
     #write to output file, places line then newline
-    print('...')
+    if (testing):
+        print('...')
     outputFile = os.path.splitext(inputFile)[0]+'.hex'
     output = open(outputFile, 'w')
     for i in range(len(hex)):
         output.writelines(hex[i] + comments[i] + '\n')
-        if(testing == True):
+        if(testing):
             print(hex[i] + comments[i])
     output.close()
 

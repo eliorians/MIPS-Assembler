@@ -1,0 +1,85 @@
+
+640100d0 # daddiu r1 r0 a00
+64020100 # daddiu r2 r0 b00
+64030130 # daddiu r3 r0 c00
+dc040098 # ld r4 esize r0
+dc0500a8 # ld r5 arowno r0
+dc0600b8 # ld r6 bcolno r0
+dc0700a0 # ld r7 acolno r0
+dc0800b0 # ld r8 arowsize r0
+dc0900c0 # ld r9 browsize r0
+600a0000 # daddi r10 r0 0
+600b0000 # daddi r11 r0 0
+10ab000d # beq r11 r5 done
+002a602c # dadd r12 r1 r10
+600d0000 # daddi r13 r0 0
+600e0000 # daddi r14 r0 0
+10cd0009 # beq r13 r6 doneMid
+618f0000 # daddi r15 r12 0
+004e802c # dadd r16 r2 r14
+d40000c8 # l.d f0 zero r0
+60120000 # daddi r18 r0 0
+10f20004 # beq r18 r7 doneIn
+d5e10000 # l.d f1 0 r15
+d6020000 # l.d f2 0 r16
+00410831 # mul.d f1 f2 f1
+0001002f # add.d f0 f0 f1
+01e4782c # dadd r15 r15 r4
+0209802c # dadd r16 r16 r9
+62520001 # daddi r18 r18 1
+08000014 # j In
+f4600000 # s.d f0 0 r3
+0064182c # dadd r3 r3 r4
+01c4702c # dadd r14 r14 r4
+61ad0001 # daddi r13 r13 1
+0800000f # j Mid
+0148502c # dadd r10 r10 r8
+616b0001 # daddi r11 r11 1
+0800000b # j Out
+04000000 # halt
+00000008 # .dfill 8
+00000000
+00000003 # .dfill 3
+00000000
+00000002 # .dfill 2
+00000000
+00000018 # .dfill 24
+00000000
+00000002 # .dfill 2
+00000000
+00000010 # .dfill 16
+00000000
+00000000 # .dfill 0.0
+00000000
+00000000 # .dfill 1.0
+00003f80
+00000000 # .dfill 2.0
+00004000
+00000000 # .dfill 3.0
+00004040
+00000000 # .dfill 2.0
+00004000
+00000000 # .dfill 3.0
+00004040
+00000000 # .dfill 4.0
+00004080
+00000000 # .dfill 1.0
+00003f80
+00000000 # .dfill 2.0
+00004000
+00000000 # .dfill 2.0
+00004000
+00000000 # .dfill 3.0
+00004040
+00000000 # .dfill 3.0
+00004040
+00000000 # .dfill 4.0
+00004080
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
+00000000 # .dfill 0
+00000000
