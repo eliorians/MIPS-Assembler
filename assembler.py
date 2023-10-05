@@ -2,7 +2,7 @@ import os
 import sys
 import struct
 
-testing = False
+testing = True
 
 def binary_to_hex(binary_str):
     hex_str = hex(int(binary_str, 2)) 
@@ -35,13 +35,27 @@ def label_to_binary(label, label_dict):
     # Ensure the binary string is 16 bits long, filling with leading zeros if necessary
     return binary_byte.zfill(16)  
 
-def decimal_to_binary16(decimal_str):
-    decimal_num = int(decimal_str)
-    # Convert to binary and remove '0b' prefix
-    binary_str = bin(decimal_num)[2:]  
-    # Pad with leading zeros to make it 16 bits long
-    binary_str = binary_str.zfill(16)
-    return binary_str
+def decimal_to_binary16(decimal_number):
+    if decimal_number >= 0:
+        # Convert positive decimal to binary
+        binary_representation = bin(int(decimal_number))[2:].zfill(16)
+    else:
+        # Convert negative decimal to binary using two's complement
+        positive_binary = bin(int(abs(decimal_number)))[2:].zfill(16)
+        inverted_binary = ''.join('1' if bit == '0' else '0' for bit in positive_binary)
+        carry = 1
+        binary_representation = ''
+        
+        for bit in reversed(inverted_binary):
+            if bit == '0' and carry == 1:
+                binary_representation = '1' + binary_representation
+                carry = 0
+            elif bit == '1' and carry == 1:
+                binary_representation = '0' + binary_representation
+            else:
+                binary_representation = bit + binary_representation
+    
+    return binary_representation
 
 def decimal_to_binary26(decimal_str):
     decimal_num = int(decimal_str)
@@ -84,6 +98,13 @@ def float_to_binary32(float_number):
     binary_string = format(int_representation, '032b')
 
     return binary_string
+
+def is_integer(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 def remove_label(line, label):
     words = line.split()
@@ -129,7 +150,6 @@ def main():
     #remove leading & trailing spaces
     for i in range(len(lines)):
         lines[i] = lines[i].strip()    
-    
     #convert instructions to binary
     pc = 0
     offset = 0
@@ -144,7 +164,7 @@ def main():
         #operation (instruction type)
         #fields incoming
         #encoding
-
+        
         #ld (I) from label
         #Opcode 55 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
         #encoding: opcode / rs / rt / imm
@@ -153,7 +173,7 @@ def main():
             binary.append(binaryLine)
             #ld from immm
         elif (line[0]=='ld' and line[1] in registers and line[2].isdigit() and line[3] in registers):
-            binaryLine = '110111'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(line[2])
+            binaryLine = '110111'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(int(line[2]))
             binary.append(binaryLine)
 
         #l.d (I) from lable
@@ -164,10 +184,10 @@ def main():
             binary.append(binaryLine)
             #l.d from imm
         elif (line[0]=='l.d' and line[1] in registers and line[2].isdigit() and line[3] in registers):
-            binaryLine = '110101'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(line[2])
+            binaryLine = '110101'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(int(line[2]))
             binary.append(binaryLine)
             
-        #sd (I)
+        #sd (I) from labels
         #Opcode 63 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='sd' and line[1] in registers and line[2] in labels and line[3] in registers):
@@ -175,10 +195,10 @@ def main():
             binary.append(binaryLine)
             #sd from immm
         elif (line[0]=='sd' and line[1] in registers and line[2].isdigit() and line[3] in registers):
-            binaryLine = '111111'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(line[2])
+            binaryLine = '111111'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(int(line[2]))
             binary.append(binaryLine)
 
-        #s.d (I)
+        #s.d (I) from labels
         #Opcode 61 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
         #encoding: opcode / rs / rt / imm
         elif (line[0]=='s.d' and line[1] in registers and line[2] in labels and line[3] in registers):
@@ -186,25 +206,26 @@ def main():
             binary.append(binaryLine)
             #sd from immm
         elif (line[0]=='s.d' and line[1] in registers and line[2].isdigit() and line[3] in registers):
-            binaryLine = '111101'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(line[2])
+            binaryLine = '111101'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(int(line[2]))
             binary.append(binaryLine)
 
         #daddi (I) immediate
         #Opcode 24 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (decimal# -> binary)
         #encoding: opcode / rs / rt / imm
-        elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3].isdigit()):
-            binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
+        elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and is_integer(line[3])):
+            binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
             binary.append(binaryLine)
             #daddu label
         elif (line[0]=='daddi' and line[1] in registers and line[2] in registers and line[3] in labels):
+            print(label_to_binary(line[3], labels))
             binaryLine = '011000'+register_to_binary(line[2])+register_to_binary(line[1])+label_to_binary(line[3], labels)
             binary.append(binaryLine)
 
         #daddiu (I)
         #Opcode 25 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (decimal# -> binary)
         #encoding: opcode / rs / rt / imm
-        elif (line[0]=='daddiu' and line[1] in registers and line[2] in registers and line[3].isdigit()):
-            binaryLine = '011001'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(line[3])
+        elif (line[0]=='daddiu' and line[1] in registers and line[2] in registers and is_integer(line[3])):
+            binaryLine = '011001'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
             binary.append(binaryLine)
 
         #beq (I) label
@@ -305,8 +326,8 @@ def main():
 
         #.dfil for decimals, floats, + or -
         # store data into two lines, add no comment line
-        #TODO make work for floats and negatives
-        elif (line[0]=='.dfill' and (line[1]).isdigit()):
+        #TODO make work for floats
+        elif (line[0]=='.dfill' and is_integer(line[1])):
             binaryLine = decimal_to_binary32(int(line[1]))
             binaryLeft = binaryLine[:16]
             binaryRight = binaryLine[16:]
