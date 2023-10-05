@@ -1,6 +1,6 @@
 dc010018 # ld	r1	negone	r0
 60210001 # daddi r1 r1 1
-10010000 # beq	r1	r0	loop
+1001fffe # beq	r1	r0	loop
 0c000000 # nop
 fc010020 # sd	r1	32	r0
 04000000 # halt

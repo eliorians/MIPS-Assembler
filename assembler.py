@@ -2,7 +2,12 @@ import os
 import sys
 import struct
 
+#Office Hours:
+#Monday 11-3
+#Tuesday 3-5
+
 testing = True
+#cd /u/css/classes/5483/111/MA/
 
 def binary_to_hex(binary_str):
     hex_str = hex(int(binary_str, 2)) 
@@ -151,6 +156,7 @@ def main():
 
     #label calculation
     #todo alignment (add extra bytes to some lines and also add 00000000 line?)
+    #todo if halt ends on byte not a multiple of 8 then padd with 0's to make it so
     byte = 0
     labels = {}
     for i in range(len(lines)):
@@ -253,24 +259,23 @@ def main():
             binary.append(binaryLine)
 
         #beq (I) label
-        #todo label calculation off
-        # Opcode 4 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
+        # Opcode 4 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (target - pc+4) // 4)
         # encoding: opcode / rs / rt / imm
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3] in labels):
-            binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs(int((pc-int(labels[line[3]]))/8)))
+            binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16((int(labels[line[3]]) - (pc+4)) // 4)
             binary.append(binaryLine)
             #beq imm
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3].isdigit):
             binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
             binary.append(binaryLine)
 
-        #bne (I)
-        # Opcode 5 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
+        #bne (I) from label
+        # Opcode 5 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (target - pc+4) // 4)
         # encoding: opcode / rs / rt / imm
         elif (line[0]=='bne' and line[1] in registers and line[2] in registers and line[3] in labels):
-            binaryLine = '000101'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(abs(int((pc-int(labels[line[3]]))/8)))
+            binaryLine = '000101'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16((int(labels[line[3]]) - (pc+4)) // 4)
             binary.append(binaryLine)
-            #bne imm
+            #bne from imm
         elif (line[0]=='bne' and line[1] in registers and line[2] in registers and line[3].isdigit):
             binaryLine = '000101'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
             binary.append(binaryLine)
@@ -357,11 +362,11 @@ def main():
             binaryLeft = binaryLine[:16]
             binaryRight = binaryLine[16:]
             #if number was negative, fill out the remaining 1's
-            negative = False
+            is_neg = False
             if (int(line[1]) < 0):
-                negative = True
-            binaryLeft = extend_binary32(binaryLeft, negative)
-            binaryRight = extend_binary32(binaryRight, negative)
+                is_neg = True
+            binaryLeft = extend_binary32(binaryLeft, is_neg)
+            binaryRight = extend_binary32(binaryRight, is_neg)
             binary.append(binaryRight)
             binary.append(binaryLeft)
             comments.append('')
