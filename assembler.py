@@ -1,8 +1,13 @@
-import sys
 import os
+import sys
 import struct
 
-testing = True
+testing = False
+
+def binary_to_hex(binary_str):
+    hex_str = hex(int(binary_str, 2)) 
+    # Remove the '0x' prefix and return the result
+    return hex_str[2:].zfill(8)
 
 #list of possible registers
 registers = []
@@ -21,7 +26,7 @@ def register_to_binary(register_str):
             return binary_representation
         else:
             return "Invalid register number"
-        
+
 def label_to_binary(label, label_dict):
     byte = label_dict[label]
     decimal_byte = int(byte)
@@ -29,17 +34,6 @@ def label_to_binary(label, label_dict):
     binary_byte = bin(decimal_byte)[2:]  
     # Ensure the binary string is 16 bits long, filling with leading zeros if necessary
     return binary_byte.zfill(16)  
-
-def remove_label(line, label):
-    words = line.split()
-    if label in words:
-        words.remove(label)
-    return ' '.join(words)
-
-def binary_to_hex(binary_str):
-    hex_str = hex(int(binary_str, 2)) 
-    # Remove the '0x' prefix and return the result
-    return hex_str[2:].zfill(8)
 
 def decimal_to_binary16(decimal_str):
     decimal_num = int(decimal_str)
@@ -51,9 +45,9 @@ def decimal_to_binary16(decimal_str):
 
 def decimal_to_binary26(decimal_str):
     decimal_num = int(decimal_str)
-    # Convert to binary and remove '0b' prefix
+    #convert to binary and remove '0b' prefix
     binary_str = bin(decimal_num)[2:]  
-    # Pad with leading zeros to make it 26 bits long
+    #pad with leading zeros to make it 26 bits long
     binary_str = binary_str.zfill(26)
     return binary_str
     
@@ -79,13 +73,6 @@ def decimal_to_binary32(decimal_number):
     
     return binary_representation
 
-def is_float(input):
-    try:
-        float(input)
-        return True
-    except ValueError:
-        return False
-    
 def float_to_binary32(float_number):
     # Pack the float as a 32-bit binary string
     binary_representation = struct.pack('f', float_number)
@@ -97,6 +84,12 @@ def float_to_binary32(float_number):
     binary_string = format(int_representation, '032b')
 
     return binary_string
+
+def remove_label(line, label):
+    words = line.split()
+    if label in words:
+        words.remove(label)
+    return ' '.join(words)
 
 def main():
     #get file and put each line into a string in list
@@ -142,16 +135,15 @@ def main():
     offset = 0
     binary = []
     comments = []
-    invalid = False
     for i in range(len(lines)):
         line = lines[i]
-        comments.append(' # '+remove_label(line, labels))
+        comments.append(' # ' + line)
         line = line.split()
         binaryLine = ""
 
-        #! operation (instruction type)
-        #! fields incoming
-        #! encoding
+        #operation (instruction type)
+        #fields incoming
+        #encoding
 
         #ld (I) from label
         #Opcode 55 in 6 bits / rt in 5 bits / imm in 16 bits (from labels) / rs in 5 bits / 
@@ -171,7 +163,7 @@ def main():
             binaryLine = '110101'+register_to_binary(line[3])+register_to_binary(line[1])+label_to_binary(line[2],labels)
             binary.append(binaryLine)
             #l.d from imm
-        elif (line[0]=='ld' and line[1] in registers and line[2].isdigit() and line[3] in registers):
+        elif (line[0]=='l.d' and line[1] in registers and line[2].isdigit() and line[3] in registers):
             binaryLine = '110101'+register_to_binary(line[3])+register_to_binary(line[1])+decimal_to_binary16(line[2])
             binary.append(binaryLine)
             
@@ -225,6 +217,7 @@ def main():
         elif (line[0]=='beq' and line[1] in registers and line[2] in registers and line[3].isdigit):
             binaryLine = '000100'+register_to_binary(line[2])+register_to_binary(line[1])+decimal_to_binary16(int(line[3]))
             binary.append(binaryLine)
+
         #bne (I)
         # Opcode 5 in 6 bits / rt in 5 bits / rs in 5 bits / imm in 16 bits (abs(pc - label)/8)
         # encoding: opcode / rs / rt / imm
@@ -238,30 +231,45 @@ def main():
 
         #dadd (R)
         # OpCode 0 in 6 bits / rd in 5 bits / rs in 5 bits / rt in 5 bits
-        # opcode / rs / rt / rd / shamt (0) in 5 bits / funct 46 in 6 bits
+        # opcode / rs / rt / rd / shamt (0) in 5 bits / funct 44 in 6 bits
         elif (line[0]=='dadd' and line[1] in registers and line[2] in registers and line[3] in registers):
             binaryLine = '000000'+register_to_binary(line[2])+register_to_binary(line[3])+register_to_binary(line[1])+'00000'+'101100'
             binary.append(binaryLine)
 
-        #TODO dsub (R)
-        #
-        #
+        #dsub (R)
+        # OpCode 0 in 6 bits / rd in 5 bits / rs in 5 bits / rt in 5 bits
+        # opcode / rs / rt / rd / shamt (0) in 5 bits / funct 46 in 6 bits
+        elif (line[0]=='dsub' and line[1] in registers and line[2] in registers and line[3] in registers):
+            binaryLine = '000000'+register_to_binary(line[2])+register_to_binary(line[3])+register_to_binary(line[1])+'00000'+'101110'
+            binary.append(binaryLine)
 
-        #TODO add.d (R)
-        #
-        #
+        #add.d (R)
+        # OpCode 0 in 6 bits / rd in 5 bits / rs in 5 bits / rt in 5 bits
+        # opcode / rs / rt / rd / shamt (0) in 5 bits / funct 47 in 6 bits
+        elif (line[0]=='add.d' and line[1] in registers and line[2] in registers and line[3] in registers):
+            binaryLine = '000000'+register_to_binary(line[2])+register_to_binary(line[3])+register_to_binary(line[1])+'00000'+'101111'
+            binary.append(binaryLine)
 
-        #TODO sub.d (R)
-        #
-        #
+        #sub.d (R)
+        # OpCode 0 in 6 bits / rd in 5 bits / rs in 5 bits / rt in 5 bits
+        # opcode / rs / rt / rd / shamt (0) in 5 bits / funct 48 in 6 bits
+        elif (line[0]=='sub.d' and line[1] in registers and line[2] in registers and line[3] in registers):
+            binaryLine = '000000'+register_to_binary(line[2])+register_to_binary(line[3])+register_to_binary(line[1])+'00000'+'110000'
+            binary.append(binaryLine)
 
-        #TODO mul.d (R)
-        #
-        #
+        #mul.d (R)
+        # OpCode 0 in 6 bits / rd in 5 bits / rs in 5 bits / rt in 5 bits
+        # opcode / rs / rt / rd / shamt (0) in 5 bits / funct 49 in 6 bits
+        elif (line[0]=='mul.d' and line[1] in registers and line[2] in registers and line[3] in registers):
+            binaryLine = '000000'+register_to_binary(line[2])+register_to_binary(line[3])+register_to_binary(line[1])+'00000'+'110001'
+            binary.append(binaryLine)
 
-        #TODO div.d (R)
-        #
-        #
+        #div.d (R)
+        # OpCode 0 in 6 bits / rd in 5 bits / rs in 5 bits / rt in 5 bits
+        # opcode / rs / rt / rd / shamt (0) in 5 bits / funct 50 in 6 bits
+        elif (line[0]=='div.d' and line[1] in registers and line[2] in registers and line[3] in registers):
+            binaryLine = '000000'+register_to_binary(line[2])+register_to_binary(line[3])+register_to_binary(line[1])+'00000'+'110010'
+            binary.append(binaryLine)
 
         #j (J) label
         # OpCode 2 in 6 bits / offset 26 bits

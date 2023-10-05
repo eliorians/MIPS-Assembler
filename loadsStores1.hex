@@ -1,4 +1,4 @@
-d4000028 # l.d f0 here r0
+d4000028 # l.d f0 here    r0
 dc010030 # ld r1 there r0
 dc020038 # ld r2 more r0
 dc030040 # ld r3 num1 r0
