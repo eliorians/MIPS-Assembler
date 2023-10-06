@@ -4,4 +4,6 @@ Project I: MIPS Assembler
 Assembler for a small subset of the MIPS64 instruction set.
 
 To run:
-.\assembler.py filename.asm
+python assembler.py filename.asm
+
+will create filename.hex as output
