@@ -10,8 +10,8 @@ fc040070 # sd r4 fourtn2 r0
 dc050078 # ld r5 three r0
 fc050080 # sd r5 three2 r0
 04000000 # halt
-0000cccd # .dfill 3.7
-0000406c
+9999999a # .dfill 3.7
+400d9999
 00000002 # .dfill 2
 00000000
 0000000f # .dfill 15

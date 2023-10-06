@@ -92,14 +92,16 @@ def decimal_to_binary32(decimal_number):
     
     return binary_representation
 
-def float_to_binary32(number):
-    # Pack the float as a 32-bit integer (little-endian)
-    packed = struct.pack('<f', number)
-    # Unpack the 32-bit integer as an unsigned integer
-    integer_representation = struct.unpack('<I', packed)[0]
-    # Convert the integer to its binary representation
-    binary_representation = bin(integer_representation)[2:].zfill(32)
-    return binary_representation
+def float_to_binary32(num):
+    # Pack the decimal number into a binary representation using struct.pack
+    # with the 'd' format, which represents a double-precision float.
+    packed = struct.pack('d', num)
+    # Unpack the binary representation and convert it to a binary string.
+    # Use bin() to convert the unpacked value to a binary string.
+    binary_string = bin(struct.unpack('<Q', packed)[0])[2:]
+    # Pad the binary string with leading zeros to ensure it has 64 bits.
+    padded_binary_string = binary_string.zfill(64)
+    return padded_binary_string
 
 def label_to_binary32(label, label_dict):
     byte = label_dict[label]
@@ -382,8 +384,9 @@ def main():
         # store data into two lines, add no comment line
         elif (line[0]=='.dfill' and is_float(line[1])):
             binaryLine = float_to_binary32(float(line[1]))
-            binaryLeft = binaryLine[:16]
-            binaryRight = binaryLine[16:]
+            print(binaryLine)
+            binaryLeft = binaryLine[:32]
+            binaryRight = binaryLine[32:]
             binary.append(binaryRight)
             binary.append(binaryLeft)
             comments.append('')
