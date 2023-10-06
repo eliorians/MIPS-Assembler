@@ -6,7 +6,7 @@ import struct
 #Monday 11-3
 #Tuesday 3-5
 
-testing = True
+testing = False
 #cd /u/css/classes/5483/111/MA/
 
 def binary_to_hex(binary_str):
