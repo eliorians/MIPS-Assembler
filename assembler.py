@@ -384,7 +384,6 @@ def main():
         # store data into two lines, add no comment line
         elif (line[0]=='.dfill' and is_float(line[1])):
             binaryLine = float_to_binary32(float(line[1]))
-            print(binaryLine)
             binaryLeft = binaryLine[:32]
             binaryRight = binaryLine[32:]
             binary.append(binaryRight)
